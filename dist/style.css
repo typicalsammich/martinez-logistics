@@ -22,3 +22,46 @@ nav a.button[aria-current=page]{color:#111}
 @media(max-width:760px){.hero{min-height:760px;height:100svh}.showroom-copy{padding:25px 7% 65px}.showroom-copy h2{font-size:54px}.photo-zone:after{background:linear-gradient(180deg,#0b0c0d,transparent 35%,transparent 75%,#0b0c0d)}.showroom-copy .selector{margin-bottom:25px}}
 .private-showroom{overflow-x:clip}.model-booking-summary{bottom:70px;left:0;right:0;padding:50px 10% 20px;background:linear-gradient(0deg,#0b0c0df0,transparent)}
 @media(max-width:760px){.model-booking-summary{bottom:0;padding:50px 7% 20px}}
+/* Dedicated automotive stage. The reservation interface enters only after selection. */
+body:has(.model-showroom) footer{display:none}
+.model-showroom{position:relative;height:100svh;min-height:660px;padding:0;overflow:hidden;background:#0a0b0d}
+.model-showroom .showroom-experience{display:block;height:100%;min-height:0}
+.model-showroom .showroom-topline{position:absolute;top:145px;left:6%;right:6%;z-index:3;pointer-events:none;display:flex;justify-content:space-between}
+.model-showroom .showroom-topline h1{font-size:30px}
+.model-showroom .photo-zone{position:absolute;inset:0;min-height:0;width:100%;height:100%;transition:width 1.2s cubic-bezier(.2,.65,.2,1)}
+.model-showroom .photo-zone:after{display:none}
+#vehicle-stage{position:absolute;inset:0;opacity:0;transition:opacity 1s;touch-action:pan-y;cursor:grab}
+#vehicle-stage:active{cursor:grabbing}#vehicle-stage canvas{display:block;width:100%;height:100%}
+.model-ready #vehicle-stage{opacity:1}.model-ready .photo-host{opacity:0;pointer-events:none}
+.model-showroom .photo-host{transition:opacity 1s}.model-showroom .photo-host img{object-fit:contain}
+#model-status{position:absolute;top:47%;width:100%;text-align:center;max-width:none;font-size:11px;color:var(--gold);z-index:2;pointer-events:none}
+.model-showroom .photo-index{left:6%;bottom:195px;font-size:10px;color:#b8b8b3}
+.model-showroom .photo-caption{left:6%;bottom:18px;font-size:8px;max-width:none}
+.rotation-controls{position:absolute;right:6%;bottom:22px;display:flex;gap:20px;align-items:center;z-index:3;font-size:9px;color:#848581}
+.rotation-controls button{color:#bba77d;background:none;border:0;border-bottom:1px solid #716142;padding:8px 0;font-size:9px}
+.model-showroom .showroom-copy{position:absolute;inset:0;padding:0;pointer-events:none;z-index:3}
+.model-showroom .showroom-copy>*{pointer-events:auto}
+.model-showroom .category-tabs{position:absolute;top:145px;left:50%;transform:translateX(-50%);margin:0;gap:25px}
+.model-showroom #showroom-description{position:absolute;bottom:80px;left:6%}
+.model-showroom #showroom-description h2{font-size:45px;margin:0 0 8px}
+.model-showroom #showroom-description h3,.model-showroom #showroom-description>p:not(.showroom-price){display:none}
+.model-showroom #showroom-description .showroom-price{font-size:17px;margin:0;color:#c4a66b}
+.model-showroom #showroom-description small{font-size:9px;color:#8a8d8e}
+.model-showroom .showroom-copy>label,.model-showroom #showroom-service,.model-showroom .understated{display:none}
+.model-showroom #select-vehicle{position:absolute;right:6%;bottom:90px;width:auto;margin:0;padding:13px 30px;min-height:48px;background:#c4a66b;color:#08090a}
+.model-showroom .category-navigation{position:absolute;left:50%;bottom:91px;transform:translateX(-50%);gap:30px;width:160px}
+.model-showroom .category-rule{display:none}
+.model-showroom .category-navigation button{min-height:44px}
+.model-showroom.is-booking{height:auto;min-height:100svh;overflow:clip}
+.model-showroom.is-booking .showroom-experience{display:grid;grid-template-columns:1fr 1fr;min-height:100svh;height:auto}
+.model-showroom.is-booking .photo-zone{position:sticky;top:90px;height:calc(100svh - 90px);width:100%;min-height:0}
+.model-showroom.is-booking .rotation-controls{display:none}
+.model-showroom.is-booking .photo-index{top:35px;bottom:auto;left:10%}
+.model-showroom.is-booking .reservation-panel{display:block;padding:145px 10% 60px 5%;animation:reservation-reveal .9s ease both}
+.model-showroom .reservation-panel[hidden]{display:none}
+.model-showroom .model-booking-summary{bottom:65px}
+@media(max-width:760px){.model-showroom{min-height:640px;padding-top:0}.model-showroom .showroom-topline{top:115px;left:7%}.model-showroom .showroom-topline h1{font-size:25px}.model-showroom .category-tabs{top:210px}.model-showroom .photo-index{left:7%;bottom:232px;font-size:8px}.model-showroom #showroom-description{left:7%;bottom:138px}.model-showroom #showroom-description h2{font-size:33px}.model-showroom #select-vehicle{right:7%;bottom:62px;padding:11px 20px;min-height:44px}.model-showroom .category-navigation{left:7%;transform:none;bottom:60px;width:140px;gap:25px}.model-showroom .photo-caption{display:none}.rotation-controls{left:7%;right:7%;bottom:16px;justify-content:space-between}.model-showroom.is-booking .showroom-experience{display:block}.model-showroom.is-booking .photo-zone{position:relative;top:90px;height:340px}.model-showroom.is-booking .reservation-panel{padding:110px 7% 50px}.model-showroom.is-booking .photo-index{top:10px}.model-showroom .model-booking-summary{bottom:10px}.model-showroom .model-booking-summary h2{font-size:28px}}
+.model-showroom .showroom-copy{height:100%;align-self:stretch}.model-showroom .showroom-topline{top:140px}.model-showroom .category-tabs{top:145px}.model-showroom .photo-index{color:#b4a78a}
+.arrival-stage{position:absolute;inset:0;z-index:-2;opacity:0;transition:opacity .6s}.arrival-stage.ready{opacity:1}.arrival-stage canvas{width:100%;height:100%;display:block}.arrival-ready .editorial-film{display:none}.arrival-ready:after{background:linear-gradient(90deg,#08090af5 0%,#08090ab0 30%,#08090a20 65%),linear-gradient(0deg,#08090a 0%,transparent 35%)}.arrival-ready:before{background:#08090a;z-index:-1;opacity:var(--arrival-dark,0);pointer-events:none}.arrival-ready .entrance{transition:opacity 1s,transform 1s;animation:none}.arrival-ready.entrance-playing .entrance{opacity:0;transform:translateY(12px)}.arrival-ready .skip-intro{position:absolute;bottom:90px;right:8%;z-index:4;background:none;color:var(--gold);border:0;border-bottom:1px solid #c4a66b66;padding:8px;font-size:11px}.arrival-ready .hero-bottom{z-index:2}@media(max-width:760px){.model-showroom .showroom-topline{top:115px}.model-showroom .category-tabs{top:205px}.arrival-ready:after{background:linear-gradient(0deg,#08090af5,transparent 90%)}}
+
+.model-showroom.switching-model #vehicle-stage{opacity:.12}.rotation-controls button{min-height:36px}.model-showroom #model-status{top:70%;color:#c4a66b;text-shadow:0 1px 5px black}.model-showroom .photo-index{bottom:205px}@media(max-width:760px){.rotation-controls{gap:15px;font-size:8px}.rotation-controls span{max-width:115px;text-align:right}.model-showroom .photo-index{bottom:220px}}.model-showroom.is-booking .showroom-topline{display:none}.model-showroom.is-booking .photo-index{top:40px}.model-showroom.is-booking .showroom-experience{align-items:start}

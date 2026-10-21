@@ -14,3 +14,5 @@ console.log(`Verified ${Object.keys(routeMeta).length} rendered routes, navigati
 
 
 const {photography,film}=await import('./dist/photography.js');for(const photo of Object.values(photography))assert.ok(fs.existsSync('dist'+photo.src));assert.ok(fs.existsSync('dist'+film.src));assert.ok(fs.existsSync('dist'+film.poster));console.log('Verified three photographic categories, real film and poster assets.');
+
+for(const name of ['sedan','suv','sprinter']){const b=fs.readFileSync('dist/models/'+name+'.glb');assert.equal(b.toString('utf8',0,4),'glTF');const metadata=JSON.parse(b.subarray(20,20+b.readUInt32LE(12)));assert.match(metadata.asset.extras.license,/CC-BY-4.0/);assert.ok(metadata.meshes.length>10);assert.ok(metadata.extensionsRequired.includes('KHR_draco_mesh_compression'));}console.log('Verified three licensed downloaded meshes, compression metadata and model geometry.');
