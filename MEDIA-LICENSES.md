@@ -1,6 +1,6 @@
 # Automotive media
 
-The showroom and homepage arrival use downloaded vehicle meshes with retained creator metadata, PBR materials and local Three.js rendering. Photography remains on editorial cards and as a loading/device fallback.
+The showroom uses downloaded vehicle meshes with retained creator metadata, PBR materials and local Three.js rendering. Photography remains on editorial cards. The showroom has a branded loading state with no vehicle-photo flash. The homepage uses the company’s transparent logo and CSS motion.
 
 Assets were obtained from Pexels on October 21, 2026 under the [Pexels License](https://www.pexels.com/license/), which permits website and marketing use and modification. The photographs and footage are representative editorial media, not a claim that Martinez Logistics owns the pictured makes or models. No brand or photographer endorsement is implied.
 
@@ -29,3 +29,7 @@ https://creativecommons.org/licenses/by/4.0/ . Obtained from the public allenai/
 ## Environment
 
 Poly Haven Studio Small 09, Sergej Majboroda, https://polyhaven.com/a/studio_small_09 ; Concrete Floor Painted, https://polyhaven.com/a/concrete_floor_painted . Both CC0. Three.js MIT license and Draco Apache license are included beside vendor files. The new homepage sequence is a real-time scene, not the earlier stock film.
+
+## Local fonts and logo delivery
+
+Cormorant Garamond and DM Sans from Google Fonts are self-hosted as Latin WOFF2 subsets under the SIL Open Font License; notices are in dist/fonts. Logo WebP versions preserve the supplied derivative’s alpha channel and reduce transfer size. The earlier arrival scene and film are retained legacy assets and are not loaded by the active homepage.
