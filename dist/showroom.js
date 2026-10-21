@@ -1,0 +1,46 @@
+import {options,categoryDetails} from './business.js';
+import {money} from './content.js';
+const categories=['Sedan','SUV','Sprinter'];
+export async function startShowroom(path){
+ const root=document.querySelector('.private-showroom');if(!root)return;
+ const host=document.querySelector('#model-host');const query=new URLSearchParams(location.search);let chosen=Number(query.get('option'));
+ if(!query.has('option')||!Number.isInteger(chosen)||chosen<0||chosen>=options.length)chosen=Math.max(0,categories.findIndex(c=>path.endsWith('/'+c.toLowerCase())));
+ let current=options[chosen].category,booking=false,stage=null,frame=null,loadTimer,animationTimer;
+ const serviceSelect=document.querySelector('#showroom-service'),bookingSelect=document.querySelector('#booking-service');
+ function fallback(){host.querySelector('canvas')?.remove();host.classList.remove('model-ready');document.querySelector('#model-loading-label').textContent='Luxury '+current;host.querySelector('.model-loading p').textContent='3D preview is unavailable on this device. Select your category and continue booking below.';document.querySelector('.model-hint').textContent='CATEGORY PREVIEW · BOOKING REMAINS AVAILABLE';document.querySelectorAll('.inspection-controls button').forEach(b=>b.disabled=true)}
+ function refresh(){
+  current=options[chosen].category;serviceSelect.value=String(chosen);bookingSelect.value=String(chosen);
+  document.querySelectorAll('[data-showroom-category]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.showroomCategory===current)));
+  document.querySelector('#showroom-index').textContent=`0${categories.indexOf(current)+1} / 03`;
+  document.querySelector('#showroom-description').innerHTML=`<h2>Luxury ${current}</h2><h3>${categoryDetails[current].headline}</h3><p>${categoryDetails[current].description}</p><p class="showroom-price">${money(options[chosen].price)} <small>/ one-hour listing</small></p>`;
+  document.querySelector('#compact-category').textContent='Luxury '+current;document.querySelector('#reservation-service-label').textContent=`${options[chosen].name} · ${money(options[chosen].price)} · 1 hour`;
+  document.querySelector('#external-booking').href=options[chosen].bookingUrl;
+  if(stage?.category!==current){stage?.setCategory(current);if(stage)stage.category=current}
+  stage?.setPaused(booking);document.querySelector('#rotation-toggle').textContent=booking?'Resume rotation':'Pause rotation';document.querySelector('#rotation-toggle').setAttribute('aria-pressed',String(booking));
+ }
+ function updateFrame(){
+  if(!frame){frame=document.createElement('iframe');frame.id='live-scheduler';frame.title='Martinez Logistics live Acuity reservation calendar';frame.allow='payment';frame.referrerPolicy='strict-origin-when-cross-origin';frame.addEventListener('load',()=>{clearTimeout(loadTimer);document.querySelector('#scheduler-status').textContent='Live calendar provided by Acuity Scheduling.'});document.querySelector('#scheduler-mount').append(frame)}
+  const url=new URL(options[chosen].bookingUrl);for(const [key,value]of Object.entries({bodyBackground:'121416',headerText:'f2f0eb',schedulerBackground:'121416',schedulerText:'f2f0eb',buttonAccent:'c4a66b',buttonText:'08090a'}))url.searchParams.set(key,value);
+  document.querySelector('#scheduler-status').textContent='Loading your selected service…';frame.src=url.href;clearTimeout(loadTimer);loadTimer=setTimeout(()=>document.querySelector('#scheduler-status').textContent='If the calendar cannot load, open booking in a new tab below.',12000);
+ }
+ function setBooking(value,push=true){
+  booking=value;root.classList.toggle('is-booking',value);document.querySelector('.reservation-panel').hidden=!value;document.querySelector('.showroom-copy').hidden=value;document.querySelector('.model-booking-summary').hidden=!value;stage?.setPaused(value);
+  refresh();stage?.setBooking(value);if(value){updateFrame();clearTimeout(animationTimer);animationTimer=setTimeout(()=>document.querySelector('#reservation-heading').focus({preventScroll:true}),matchMedia('(prefers-reduced-motion: reduce)').matches?0:650)}
+  if(push)history.pushState({showroomBooking:value,chosen},'',`/reserve/?option=${chosen}${value?'&booking=1':''}`);
+ }
+ function chooseCategory(category){const index=options.findIndex(o=>o.category===category&&o.type==='Hourly');chosen=index;refresh();history.replaceState({showroomBooking:false,chosen},'',`/fleet/${category.toLowerCase()}/`)}
+ document.querySelectorAll('[data-showroom-category]').forEach(b=>b.addEventListener('click',()=>chooseCategory(b.dataset.showroomCategory)));
+ for(const [id,direction]of [['previous-vehicle',-1],['next-vehicle',1]])document.querySelector('#'+id).addEventListener('click',()=>chooseCategory(categories[(categories.indexOf(current)+direction+3)%3]));
+ serviceSelect.addEventListener('change',()=>{chosen=Number(serviceSelect.value);refresh();history.replaceState({showroomBooking:false,chosen},'',`/reserve/?option=${chosen}`)});
+ bookingSelect.addEventListener('change',()=>{chosen=Number(bookingSelect.value);refresh();updateFrame();history.replaceState({showroomBooking:true,chosen},'',`/reserve/?option=${chosen}&booking=1`)});
+ document.querySelector('#select-vehicle').addEventListener('click',()=>setBooking(true));
+ document.querySelector('#back-to-showroom').addEventListener('click',()=>setBooking(false));document.querySelector('#change-vehicle').addEventListener('click',()=>setBooking(false));
+ document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>stage?.setView(b.dataset.view)));
+ document.querySelector('#rotation-toggle').addEventListener('click',event=>{if(!stage)return;stage.setPaused(!stage.paused);event.currentTarget.textContent=stage.paused?'Resume rotation':'Pause rotation';event.currentTarget.setAttribute('aria-pressed',String(stage.paused))});
+ document.querySelector('#reset-model').addEventListener('click',()=>stage?.reset());document.querySelector('#zoom-in').addEventListener('click',()=>stage?.zoom(-1.5));document.querySelector('#zoom-out').addEventListener('click',()=>stage?.zoom(1.5));
+ addEventListener('popstate',event=>{const p=new URLSearchParams(location.search),index=Number(p.get('option'));if(p.has('option')&&Number.isInteger(index)&&index>=0&&index<options.length)chosen=index;setBooking(p.get('booking')==='1',false)});
+ refresh();if(query.get('booking')==='1')setBooking(true,false);
+ try{const {createStage}=await import('./vehicle-stage.js');stage=createStage(host,{category:current,onReady(){host.classList.add('model-ready')},onError:fallback});if(stage){stage.category=current;stage.setPaused(booking)}else fallback()}catch(error){fallback()}
+ addEventListener('pagehide',()=>{clearTimeout(loadTimer);clearTimeout(animationTimer);stage?.dispose()},{once:true});
+ addEventListener('pageshow',event=>{if(event.persisted)location.reload()});
+}

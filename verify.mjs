@@ -11,3 +11,8 @@ for(const [route] of Object.entries(routeMeta)){
 for(const option of options)assert.match(option.bookingUrl,new RegExp('/appointment/'+option.appointmentId+'/calendar/14399125$'));
 const config=JSON.parse(fs.readFileSync('vercel.json','utf8'));assert.equal(config.outputDirectory,'dist');
 console.log(`Verified ${Object.keys(routeMeta).length} rendered routes, navigation arrow removal, nine unique live booking mappings, supplied rates and Vercel output configuration.`);
+
+const {createVehicle,vehicleSpecs}=await import('./dist/vehicles.js');
+const T=await import('./dist/vendor/three.module.min.js');
+for(const category of ['Sedan','SUV','Sprinter']){const model=createVehicle(category);assert.equal(model.userData.wheels.length,4);const bounds=new T.Box3().setFromObject(model);const size=bounds.getSize(new T.Vector3());assert.ok(size.x>=vehicleSpecs[category].length);assert.ok(size.y>=vehicleSpecs[category].height-.15);model.traverse(o=>{if(o.geometry){for(const v of o.geometry.attributes.position.array)assert.ok(Number.isFinite(v),category+' geometry must be finite')}})}
+console.log('Verified three distinct 3D vehicle categories, four wheels per model and finite geometry.');

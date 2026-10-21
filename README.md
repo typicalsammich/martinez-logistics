@@ -1,6 +1,6 @@
 # Martinez Logistics LLC
 
-Luxury chauffeur website with 18 prerendered routes, all nine supplied service rates, a category showroom and live Acuity reservations.
+Luxury chauffeur website with 18 prerendered routes, all nine supplied service rates, an interactive 3D category showroom, a vehicle arrival animation and live Acuity reservations.
 
 ## Run and deploy
 
@@ -27,7 +27,11 @@ The original site's About page states the company began in 2016 with a 26-foot b
 
 The transparent PNG is an imagegen derivative of the supplied logo; it has minor differences and should receive brand review. The hero SUV image is AI-generated illustrative editorial imagery, identified on the site. It is not presented as an actual fleet photograph. Cursor and pointer SVGs are native assets. Thin gold/charcoal scrollbar styling preserves native wheel and touch scrolling; browser chrome and hardware cannot be restyled by a website.
 
-The entrance uses a 4.8-second still-image lighting/text reveal with skip, session replay suppression and reduced-motion support. This is not a moving vehicle arrival film. Set `business.cinematicVideo` only after obtaining licensed, verified fleet footage; optional video playback already supports muted inline playback, poster, error fallback and skipping. Accurate make/model/year, photos and licensed 3D models remain required for true vehicle rotation and inspection. Sedan and Sprinter use honest category typography until those assets exist. No fake generic 3D car is substituted.
+The user authorized representative placeholder models on October 21, 2026. Three original procedural concept vehicles (Sedan, SUV, high-roof Sprinter category) are generated in dist/vehicles.js; they are clearly labeled temporary previews, not actual fleet claims. Three.js r180 is vendored locally with its MIT license. No model licensing or CDN requests are required. Replace createVehicle or add a model loader later to use real fleet assets.
+
+The showroom has a rotating physical platform, PBR paint and glass, environment reflections, soft shadows, four wheel assemblies, drag rotation, front/side/rear presets, pause/reset/zoom controls, mobile layout, reduced-motion support and WebGL failure fallback. Selecting a vehicle keeps it on screen and transitions into the matching live Acuity service. All nine appointment IDs and supplied prices are retained. Browser back restores the showroom.
+
+The homepage uses the representative SUV for a real 4.8-second WebGL approach, wheel movement and stop outside a simple architectural entrance. The static hero remains the immediate fallback for rendering failure. The sequence can be skipped, is suppressed on repeat visits in the same tab session, and jumps to its final pose under reduced motion. The render is a concept prototype, not photorealistic footage. dist/vehicle-stage.js is the shared environment and rendering module; dist/arrival.js directs the cinematic; dist/showroom.js controls selection and booking.
 
 ## Contact and privacy
 
@@ -35,4 +39,6 @@ The contact form opens an email draft in the visitor's email app. It never false
 
 ## Validation
 
-`npm run build` verifies 412 internal asset/link references. `node verify.mjs` checks one H1 per route, resolved templates, all supplied prices, nine unique provider mappings, navigation arrow removal and Vercel's `dist` output. Node syntax checks pass. Browser QA verified all nine real iframe appointment selections, mobile menu, mobile category controls and selection preservation, desktop/mobile overflow, gold cursor and scrollbar. Live calendars load in the embedded theme. No booking or payment was completed. Reduced-motion behavior is implemented in CSS and JS; no heavy WebGL or synthetic wheel interception is used.
+`npm run build` verifies 391 internal asset/link references. `node verify.mjs` checks one H1 per route, resolved templates, all supplied prices, nine unique provider mappings, navigation arrow removal and Vercel's `dist` output. Node syntax checks pass. Browser QA verified all nine real iframe appointment selections, mobile menu, mobile category controls and selection preservation, desktop/mobile overflow, gold cursor and scrollbar. Live calendars load in the embedded theme. No booking or payment was completed. Reduced-motion behavior is implemented in CSS and JS; no heavy WebGL or synthetic wheel interception is used.
+
+3D verification: all model positions are finite, all three categories have four wheel assemblies and distinct dimensions. Browser QA verified all nine model/service mappings, mobile Sprinter display and booking without horizontal overflow, back navigation and successful WebGL rendering without console errors.

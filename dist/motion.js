@@ -5,13 +5,5 @@ export function startMotion(path){
  const progress=document.createElement('div');progress.className='scroll-progress';progress.setAttribute('aria-hidden','true');document.body.append(progress);
  let ticking=false;addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(()=>{const total=document.documentElement.scrollHeight-innerHeight;progress.style.transform=`scaleX(${total>0?scrollY/total:0})`;ticking=false});ticking=true}},{passive:true});
  if('IntersectionObserver' in window&&!reduced.matches){const observer=new IntersectionObserver(entries=>{for(const entry of entries)if(entry.isIntersecting){entry.target.classList.add('revealed');observer.unobserve(entry.target)}},{threshold:.08});document.querySelectorAll('.intro,.section-head,.fleet-card,.service-row,.steps>div,.story-timeline article,.service-directory article,.area-grid article').forEach((e,i)=>{e.classList.add('reveal-ready');e.style.setProperty('--reveal-delay',`${i%3*65}ms`);observer.observe(e)});reduced.addEventListener('change',()=>{if(reduced.matches){observer.disconnect();document.querySelectorAll('.reveal-ready').forEach(e=>e.classList.add('revealed'))}})}
- if(path!=='/')return;
- const hero=document.querySelector('.hero'),skip=hero.querySelector('.skip-intro');let seen=false;try{seen=sessionStorage.getItem('martinez-entrance')==='seen'}catch{}
- let video=null,finishTimer;
- function finish(){clearTimeout(finishTimer);hero.classList.remove('cinematic-playing');hero.classList.add('cinematic-finished');skip.hidden=true;video?.pause();try{sessionStorage.setItem('martinez-entrance','seen')}catch{}}
- skip.addEventListener('click',finish);if(seen||reduced.matches){finish();return}
- // A lighting reveal is the fallback. Vehicle movement requires licensed footage.
- hero.classList.add('cinematic-playing');skip.hidden=false;
- if(business.cinematicVideo&&!navigator.connection?.saveData){video=document.createElement('video');video.className='cinematic-video';video.muted=true;video.playsInline=true;video.preload='metadata';video.poster=business.cinematicPoster;video.setAttribute('aria-hidden','true');video.src=business.cinematicVideo;hero.prepend(video);video.addEventListener('ended',finish,{once:true});video.addEventListener('error',finish,{once:true});video.play().catch(finish)}
- finishTimer=setTimeout(finish,4800);reduced.addEventListener('change',()=>{if(reduced.matches)finish()});addEventListener('pagehide',finish,{once:true});
+ if(path==='/')import('./arrival.js').then(m=>m.startArrival()).catch(()=>{});
 }
