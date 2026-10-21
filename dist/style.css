@@ -110,3 +110,18 @@ body:has(.model-showroom) footer{display:none}
 @media(prefers-reduced-motion:reduce){.brand-intro{display:none!important}.brand-intro-pending{overflow:auto}.hero-bottom [data-replay-entrance]{display:none}}
 .hero.pickup-hero:before,.hero.pickup-hero:after{content:none;background:none}
 @media(min-width:701px){.pickup-photo img{object-position:right center}}
+/* Mobile header keeps the same geometry at the top and while scrolling. */
+@media(max-width:760px){
+ header,header.scrolled{height:80px;padding:10px 6%;background:#08090a;border-bottom:1px solid #ffffff20;box-shadow:none;backdrop-filter:none;transition:box-shadow .25s ease}
+ header .brand{display:flex;align-items:center;flex:none;line-height:0}
+ header .brand img{display:block;width:108px;height:60px;object-fit:contain}
+ header .menu{min-height:44px;min-width:60px;padding:10px 0 10px 14px;font-size:13px;line-height:24px}
+ header nav.open{top:80px;max-height:calc(100dvh - 80px);overflow-y:auto;background:#08090a}
+ .editorial-image{height:auto;display:flex;flex-direction:column;background:#08090a}
+ .editorial-image:after{display:none}
+ .editorial-image>div{position:static;order:0;padding:36px 7% 32px;background:#08090a}
+ .editorial-image .eyebrow{max-width:none;font-size:9px;line-height:1.7;letter-spacing:.18em;color:#d8be88;margin-bottom:20px}
+ .editorial-image h2{font-size:clamp(52px,15vw,72px);line-height:1.02;margin:0;color:#f2f0eb}
+ .editorial-image>img{position:static;order:1;display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;object-position:62% center;z-index:auto}
+}
+@media(max-width:700px){.pickup-hero h1{font-size:clamp(52px,17vw,68px)}}
