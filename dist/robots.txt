@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://martinez-private-chauffeur.typical-sammich.chatgpt.site/sitemap.xml
+Sitemap: https://martinez-logistics.vercel.app/sitemap.xml

@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';
+import {pageContent,routeMeta} from './dist/content.js';import {options} from './dist/business.js';
+assert.equal(options.length,9);assert.equal(new Set(options.map(o=>o.appointmentId)).size,9);
+assert.deepEqual(options.map(o=>o.price),[165,197,550,120,125,185,180,400,400]);
+for(const [route] of Object.entries(routeMeta)){
+ const body=pageContent(route);assert.equal((body.match(/<h1[ >]/g)||[]).length,1,route+' must have one h1');
+ assert.ok(!/[↗→]/.test(body),route+' must have no navigation arrows');
+ const dir='dist'+(route==='/'?'':route);const html=fs.readFileSync(dir+'/index.html','utf8');
+ assert.ok(!html.includes('{{'),route+' has unresolved build placeholders');assert.ok(html.includes('<main id="main"><'),route+' requires rendered content');
+}
+for(const option of options)assert.match(option.bookingUrl,new RegExp('/appointment/'+option.appointmentId+'/calendar/14399125$'));
+const config=JSON.parse(fs.readFileSync('vercel.json','utf8'));assert.equal(config.outputDirectory,'dist');
+console.log(`Verified ${Object.keys(routeMeta).length} rendered routes, navigation arrow removal, nine unique live booking mappings, supplied rates and Vercel output configuration.`);
