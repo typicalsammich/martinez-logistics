@@ -1,19 +1,15 @@
-import {createStage} from './vehicle-stage.js';
+import {film} from './photography.js';
 export function startArrival(){
  const hero=document.querySelector('.hero');if(!hero)return;
- const skip=hero.querySelector('.skip-intro'),reduced=matchMedia('(prefers-reduced-motion: reduce)');let seen=false;
- try{seen=sessionStorage.getItem('martinez-entrance-3d')==='seen'}catch{}
- const host=document.createElement('div');host.className='arrival-stage';host.setAttribute('aria-hidden','true');hero.prepend(host);
- let stage=null,raf=0,finished=seen||reduced.matches;
- const fail=()=>{hero.classList.remove('has-arrival-model','cinematic-playing');host.remove();skip.hidden=true;cancelAnimationFrame(raf);stage?.dispose()};
- const finish=()=>{finished=true;cancelAnimationFrame(raf);stage?.setProgress(1);hero.classList.remove('cinematic-playing');hero.classList.add('cinematic-finished');skip.hidden=true;try{sessionStorage.setItem('martinez-entrance-3d','seen')}catch{}};
- try{stage=createStage(host,{category:'SUV',cinematic:true,onReady(){hero.classList.add('has-arrival-model')},onError:fail})}catch{fail();return}
- if(!stage){fail();return}
- const note=document.createElement('span');note.className='arrival-caption';note.textContent='REPRESENTATIVE SUV · 3D CONCEPT PREVIEW';hero.append(note);
- if(finished){finish();return}
- hero.classList.add('cinematic-playing');skip.hidden=false;skip.addEventListener('click',finish);
- const begin=performance.now();function tick(now){if(finished)return;const progress=Math.min((now-begin)/4800,1);stage.setProgress(progress);if(progress===1)finish();else raf=requestAnimationFrame(tick)}raf=requestAnimationFrame(tick);
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)'),skip=hero.querySelector('.skip-intro');skip.hidden=true;
+ let stage=hero.querySelector('.editorial-film');if(!stage){stage=document.createElement('div');stage.className='editorial-film';stage.setAttribute('aria-hidden','true');const poster=document.createElement('img');poster.src=film.poster;poster.alt='';poster.className='film-poster';stage.append(poster);hero.prepend(stage)}hero.classList.add('photographic-hero');
+ const control=document.createElement('button');control.className='film-control';control.type='button';control.textContent='Play film';hero.append(control);
+ let video=null;
+ const finish=()=>{video?.pause();control.textContent='Replay film'};
+ function play(){if(!video){video=document.createElement('video');video.src=film.src;video.poster=film.poster;video.muted=true;video.playsInline=true;video.preload='metadata';video.className='real-film';video.setAttribute('aria-hidden','true');stage.append(video);video.addEventListener('playing',()=>{stage.classList.add('film-ready');control.textContent='Pause film'});video.addEventListener('ended',finish);video.addEventListener('error',()=>{stage.classList.remove('film-ready');control.textContent='Film unavailable';control.disabled=true})}if(video.ended)video.currentTime=0;video.play().catch(()=>{control.textContent='Play film'})}
+ control.addEventListener('click',()=>{if(video&&!video.paused){video.pause();control.textContent='Play film'}else play()});
+ if(!reduced.matches&&!navigator.connection?.saveData)play();
  reduced.addEventListener('change',()=>{if(reduced.matches)finish()});
- addEventListener('pagehide',()=>{cancelAnimationFrame(raf);stage?.dispose()},{once:true});
- addEventListener('pageshow',event=>{if(event.persisted)location.reload()});
+ const observer=new IntersectionObserver(entries=>{if(!entries[0].isIntersecting&&video&&!video.paused){video.pause();control.textContent='Play film'}},{threshold:.05});observer.observe(hero);
+ addEventListener('pagehide',()=>{video?.pause();observer.disconnect()},{once:true});
 }
