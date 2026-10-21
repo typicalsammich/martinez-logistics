@@ -1,5 +1,6 @@
 import {business} from './business.js';
 export function startMotion(path){
+ if(path==='/')import('./brand-intro.js').then(m=>m.startBrandIntro());
  const reduced=matchMedia('(prefers-reduced-motion: reduce)'),header=document.querySelector('header');
  const updateHeader=()=>header.classList.toggle('scrolled',scrollY>40);addEventListener('scroll',updateHeader,{passive:true});updateHeader();
  const progress=document.createElement('div');progress.className='scroll-progress';progress.setAttribute('aria-hidden','true');document.body.append(progress);

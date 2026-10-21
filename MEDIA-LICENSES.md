@@ -33,3 +33,6 @@ Poly Haven Studio Small 09, Sergej Majboroda, https://polyhaven.com/a/studio_sma
 ## Local fonts and logo delivery
 
 Cormorant Garamond and DM Sans from Google Fonts are self-hosted as Latin WOFF2 subsets under the SIL Open Font License; notices are in dist/fonts. Logo WebP versions preserve the supplied derivative’s alpha channel and reduce transfer size. The earlier arrival scene and film are retained legacy assets and are not loaded by the active homepage.
+
+## Homepage chauffeur pickup photograph
+Pavel Danilyuk / Pexels, photo 8425027. https://www.pexels.com/photo/man-in-a-gray-suit-opening-a-car-door-for-a-woman-in-black-suit-8425027/ — Pexels License. Resized to WebP in desktop and mobile sizes. Stock photograph illustrates the service.

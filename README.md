@@ -29,3 +29,5 @@ Representative models: Mercedes-Benz S-Class, Cadillac Escalade and Mercedes-Ben
 - build.mjs and verify.mjs: route, asset, rate and integration validation.
 
 GPU performance varies by device. Pixel ratio is capped; no animation is rendered in the hidden showroom tab, and the homepage animation runs once in CSS and loads no 3D renderer.
+
+The homepage entrance is a lightweight SVG/CSS composition of the original transparent logo. The SUV reverses into its original position before revealing the licensed chauffeur pickup photograph. It plays once per browser using localStorage, supports skip/replay and respects reduced motion. A six-second failsafe prevents the entrance from blocking the page.
